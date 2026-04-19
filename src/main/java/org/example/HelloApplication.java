@@ -13,7 +13,7 @@ public class HelloApplication extends Application {
     public static Stack<Pair<Scene, String>> stack = new Stack<>();
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 400);
         stack.push(new Pair<>(scene, "DietEventPlanner"));
         stage.setTitle(stack.peek().getB());

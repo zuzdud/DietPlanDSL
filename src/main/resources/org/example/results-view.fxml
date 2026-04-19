@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.ResultsController"
+      spacing="12" style="-fx-padding: 16; -fx-font-size: 13px;">
+
+    <!-- Header row -->
+    <HBox alignment="CENTER_LEFT" spacing="12">
+        <Button text="← Back" onAction="#onBackClick"/>
+        <Label text="Results" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="summaryLabel" style="-fx-text-fill: #666;"/>
+    </HBox>
+
+    <Separator/>
+
+    <Label text="Safe dishes per guest:" style="-fx-font-weight: bold;"/>
+
+    <!-- Scrollable card list -->
+    <ScrollPane fx:id="scrollPane" fitToWidth="true" VBox.vgrow="ALWAYS">
+        <VBox fx:id="resultsBox" spacing="10" style="-fx-padding: 4;"/>
+    </ScrollPane>
+
+</VBox>

@@ -1,4 +1,4 @@
-package interpreter;
+/*package interpreter;
 
 import grammar.firstLexer;
 import grammar.firstParser;
@@ -49,3 +49,4 @@ public class Main {
         }
     }
 }
+*/

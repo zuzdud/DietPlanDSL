@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.MainController"
+      spacing="10" style="-fx-padding: 12; -fx-font-size: 13px;">
+
+    <!-- Title bar row -->
+    <HBox alignment="CENTER_LEFT" spacing="12">
+        <Label text="🍽 DietEventPlanner"
+               style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="▶  Run" onAction="#onRunClick"
+                style="-fx-background-color: #2e7d32; -fx-text-fill: white;
+                       -fx-font-size: 14px; -fx-padding: 6 20;"/>
+    </HBox>
+
+    <Label fx:id="statusLabel" text="" minHeight="18"/>
+
+    <!-- Main tab pane -->
+    <TabPane fx:id="mainTabPane" VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+
+        <!-- ═══════════════ TAB 1: GUESTS ═══════════════ -->
+        <Tab text="Guests">
+            <HBox spacing="16" style="-fx-padding: 10;">
+
+                <!-- LEFT: add-guest form -->
+                <VBox spacing="8" minWidth="280" maxWidth="300">
+                    <Label text="Add Guest" style="-fx-font-weight: bold;"/>
+                    <Label text="Guest name (letters and spaces only):"/>
+                    <TextField fx:id="guestNameField" promptText="e.g. Jan Kowalski"/>
+
+                    <Label text="Allergies:"/>
+                    <HBox spacing="6">
+                        <TextField fx:id="guestAllergyField" promptText="e.g. gluten"
+                                   HBox.hgrow="ALWAYS"/>
+                        <Button text="Add" onAction="#onAddGuestAllergyClick"/>
+                    </HBox>
+                    <ListView fx:id="guestAllergyList" prefHeight="120"/>
+                    <Button text="Remove selected allergy"
+                            onAction="#onRemoveGuestAllergyClick"
+                            maxWidth="Infinity"/>
+
+                    <Region prefHeight="10"/>
+                    <Button text="✚  Add Guest" onAction="#onAddGuestClick"
+                            maxWidth="Infinity"
+                            style="-fx-background-color: #1565c0; -fx-text-fill: white;"/>
+                </VBox>
+
+                <!-- RIGHT: guests table -->
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Added Guests" style="-fx-font-weight: bold;"/>
+                    <TableView fx:id="guestsTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="guestNameCol"      text="Name"      prefWidth="200"/>
+                            <TableColumn fx:id="guestAllergiesCol" text="Allergies"  prefWidth="300"/>
+                        </columns>
+                        <placeholder><Label text="No guests yet."/></placeholder>
+                    </TableView>
+                    <Button text="Remove selected guest" onAction="#onRemoveGuestClick"/>
+                </VBox>
+            </HBox>
+        </Tab>
+
+        <!-- ═══════════════ TAB 2: DISHES ═══════════════ -->
+        <Tab text="Dishes">
+            <HBox spacing="16" style="-fx-padding: 10;">
+
+                <!-- LEFT: add-dish form -->
+                <VBox spacing="8" minWidth="280" maxWidth="300">
+                    <Label text="Add Dish" style="-fx-font-weight: bold;"/>
+                    <Label text="Dish name (letters and spaces only):"/>
+                    <TextField fx:id="dishNameField" promptText="e.g. Spaghetti Bolognese"/>
+
+                    <Label text="Ingredients:"/>
+                    <HBox spacing="6">
+                        <TextField fx:id="dishIngredientField" promptText="e.g. pasta"
+                                   HBox.hgrow="ALWAYS"/>
+                        <Button text="Add" onAction="#onAddDishIngredientClick"/>
+                    </HBox>
+                    <ListView fx:id="dishIngredientList" prefHeight="90"/>
+                    <Button text="Remove selected ingredient"
+                            onAction="#onRemoveDishIngredientClick" maxWidth="Infinity"/>
+
+                    <Label text="Allergens:"/>
+                    <HBox spacing="6">
+                        <TextField fx:id="dishAllergenField" promptText="e.g. gluten"
+                                   HBox.hgrow="ALWAYS"/>
+                        <Button text="Add" onAction="#onAddDishAllergenClick"/>
+                    </HBox>
+                    <ListView fx:id="dishAllergenList" prefHeight="90"/>
+                    <Button text="Remove selected allergen"
+                            onAction="#onRemoveDishAllergenClick" maxWidth="Infinity"/>
+
+                    <Region prefHeight="4"/>
+                    <Button text="✚  Add Dish" onAction="#onAddDishClick"
+                            maxWidth="Infinity"
+                            style="-fx-background-color: #1565c0; -fx-text-fill: white;"/>
+                </VBox>
+
+                <!-- RIGHT: dishes table -->
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Added Dishes" style="-fx-font-weight: bold;"/>
+                    <TableView fx:id="dishesTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="dishNameCol"      text="Name"      prefWidth="200"/>
+                            <TableColumn fx:id="dishAllergensCol" text="Allergens"  prefWidth="300"/>
+                        </columns>
+                        <placeholder><Label text="No dishes yet."/></placeholder>
+                    </TableView>
+                    <Button text="Remove selected dish" onAction="#onRemoveDishClick"/>
+                </VBox>
+            </HBox>
+        </Tab>
+
+        <!-- ═══════════════ TAB 3: DSL EDITOR ═══════════════ -->
+        <Tab text="DSL Editor">
+            <VBox spacing="8" style="-fx-padding: 10;">
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <Label text="Edit DSL directly, or switch here to see what the form generated."
+                           style="-fx-text-fill: #555;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="⟳  Regenerate from form" onAction="#onRegenerateDslClick"/>
+                </HBox>
+                <TextArea fx:id="dslEditor"
+                          promptText="guest &quot;Jan Kowalski&quot; {&#10;    allergies: gluten;&#10;}&#10;&#10;dish &quot;Salad&quot; {&#10;    allergens: lactose;&#10;}"
+                          VBox.vgrow="ALWAYS"
+                          style="-fx-font-family: monospace; -fx-font-size: 13px;"/>
+            </VBox>
+        </Tab>
+
+    </TabPane>
+</VBox>
