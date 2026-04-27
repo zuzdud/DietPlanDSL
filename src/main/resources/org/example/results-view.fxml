@@ -12,6 +12,7 @@
         <Button text="← Back" onAction="#onBackClick"/>
         <Label text="Results" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
         <Region HBox.hgrow="ALWAYS"/>
+        <Button text="💾 Save Results" onAction="#onSaveResultsClick" />
         <Label fx:id="summaryLabel" style="-fx-text-fill: #666;"/>
     </HBox>
 
