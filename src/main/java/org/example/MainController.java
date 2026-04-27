@@ -77,6 +77,17 @@ public class MainController {
                         dslEditor.setText(buildDsl());
                     }
                 });
+
+        // Auto-load saved data on startup
+        try {
+            String dsl = java.nio.file.Files.readString(java.nio.file.Path.of("data.dsl"));
+            firstLexer lexer = new firstLexer(CharStreams.fromString(dsl));
+            firstParser parser = new firstParser(new CommonTokenStream(lexer));
+            DishVisitor visitor = new DishVisitor();
+            visitor.visit(parser.program());
+            guests.setAll(visitor.guests);
+            dishes.setAll(visitor.dishes);
+        } catch (Exception ignored) {}
     }
 
     // ── GUEST ACTIONS ─────────────────────────────────────────────────────
@@ -176,6 +187,44 @@ public class MainController {
         dishAllergenList.getItems().clear();
         dishIngredientList.getItems().clear();
         setStatus("Dish \"" + name + "\" added.", false);
+    }
+
+    @FXML
+    protected void onSaveClick() {
+        String dsl = buildDsl();
+        if (dsl.isBlank()) {
+            setStatus("Nothing to save.", true);
+            return;
+        }
+        try {
+            java.nio.file.Files.writeString(
+                    java.nio.file.Path.of("data.dsl"), dsl);
+            setStatus("Saved to data.dsl", false);
+        } catch (Exception e) {
+            setStatus("Save failed: " + e.getMessage(), true);
+        }
+    }
+
+    @FXML
+    protected void onLoadClick() {
+        try {
+            String dsl = java.nio.file.Files.readString(
+                    java.nio.file.Path.of("data.dsl"));
+
+            // Parse and repopulate the lists
+            firstLexer lexer = new firstLexer(CharStreams.fromString(dsl));
+            firstParser parser = new firstParser(new CommonTokenStream(lexer));
+            DishVisitor visitor = new DishVisitor();
+            visitor.visit(parser.program());
+
+            guests.setAll(visitor.guests);
+            dishes.setAll(visitor.dishes);
+            setStatus("Loaded from data.dsl", false);
+        } catch (java.nio.file.NoSuchFileException e) {
+            setStatus("No save file found.", true);
+        } catch (Exception e) {
+            setStatus("Load failed: " + e.getMessage(), true);
+        }
     }
 
     @FXML

@@ -16,6 +16,8 @@
         <Button text="▶  Run" onAction="#onRunClick"
                 style="-fx-background-color: #2e7d32; -fx-text-fill: white;
                        -fx-font-size: 14px; -fx-padding: 6 20;"/>
+        <Button text="💾 Save" onAction="#onSaveClick" />
+        <Button text="📂 Load" onAction="#onLoadClick" />
     </HBox>
 
     <Label fx:id="statusLabel" text="" minHeight="18"/>

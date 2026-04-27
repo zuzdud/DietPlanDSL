@@ -89,4 +89,37 @@ public class ResultsController {
         stage.setScene(scene);
         stage.show();
     }
+
+    @FXML
+    protected void onSaveResultsClick() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== Diet Event Planner — Results ===\n");
+        sb.append("Generated: ").append(java.time.LocalDateTime.now()
+                .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))).append("\n\n");
+
+        for (javafx.scene.Node node : resultsBox.getChildren()) {
+            if (!(node instanceof VBox card)) continue;
+
+            for (javafx.scene.Node child : card.getChildren()) {
+                if (!(child instanceof Label lbl)) continue;
+                String text = lbl.getText();
+                if (text.startsWith("👤")) {
+                    sb.append("\n").append(text.replace("👤 ", "")).append("\n");
+                } else if (text.startsWith("Allergic") || text.startsWith("No known")) {
+                    sb.append("  ").append(text).append("\n");
+                } else if (text.contains("✅")) {
+                    sb.append("  SAFE: ").append(text.replace("  ✅  ", "")).append("\n");
+                } else if (text.contains("⚠️")) {
+                    sb.append("  WARNING: No safe dishes found.\n");
+                }
+            }
+        }
+
+        try {
+            java.nio.file.Files.writeString(java.nio.file.Path.of("results.txt"), sb.toString());
+            summaryLabel.setText(summaryLabel.getText() + "  ✅ Saved to results.txt");
+        } catch (Exception e) {
+            summaryLabel.setText("Save failed: " + e.getMessage());
+        }
+    }
 }
