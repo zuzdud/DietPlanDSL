@@ -101,7 +101,46 @@ cp example.dsl data.dsl
 ```
 
 Alternatywnie: zawartość pliku można wkleić bezpośrednio do zakładki **DSL Editor**.
+
+---
  
+## Potok parsowania ANTLR
+ 
+Poniższy fragment (`MainController.java`, metoda `onRunClick`) pokazuje, jak aplikacja używa wygenerowanego przez ANTLR kodu do przetworzenia tekstu DSL:
+ 
+```java
+// 1. Lexer zamienia surowy tekst na strumień tokenów
+firstLexer lexer = new firstLexer(CharStreams.fromString(dsl));
+ 
+// 2. Parser buduje drzewo składniowe na podstawie gramatyki first.g4
+firstParser parser = new firstParser(new CommonTokenStream(lexer));
+ 
+// 3. Rejestracja własnego listenera błędów — domyślny ANTLR tylko wypisuje
+//    błędy na stderr; SyntaxErrorListener zbiera je, żeby wyświetlić w UI
+SyntaxErrorListener errorListener = new SyntaxErrorListener();
+parser.removeErrorListeners();
+parser.addErrorListener(errorListener);
+ 
+// 4. Uruchomienie parsowania od reguły startowej 'program'
+var tree = parser.program();
+ 
+// 5. Sprawdzenie błędów składniowych przed dalszym przetwarzaniem
+if (!errorListener.getErrors().isEmpty()) {
+    setStatus("Syntax error: " + errorListener.getErrors().get(0), true);
+    return;
+}
+ 
+// 6. Visitor przechodzi po drzewie i wypełnia listy Guest i Dish
+DishVisitor visitor = new DishVisitor();
+visitor.visit(tree);
+ 
+// Od tego momentu visitor.guests i visitor.dishes zawierają
+// sparsowane dane gotowe do dopasowania i wyświetlenia
+rc.setData(visitor.guests, visitor.dishes);
+```
+ 
+Klasy `firstLexer` i `firstParser` są generowane automatycznie przez ANTLR4 na podstawie pliku `first.g4` podczas budowania projektu (`mvnw package`). `DishVisitor` rozszerza wygenerowaną klasę bazową `firstBaseVisitor` i nadpisuje tylko te metody, które odpowiadają regułom gramatyki istotnym dla logiki aplikacji (`visitGuest_stat`, `visitDish_stat`).
+
 ---
 
 ## Struktura projektu
