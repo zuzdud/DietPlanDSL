@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.AddingController">
+   <children>
+      <ScrollPane layoutX="412.0" layoutY="100.0" prefHeight="244.0" prefWidth="345.0">
+         <content>
+            <TableView fx:id="IngredientsTableView" prefHeight="250.0" prefWidth="329.0">
+            </TableView>
+         </content>
+      </ScrollPane>
+      <Label layoutX="412.0" layoutY="72.0" prefHeight="17.0" prefWidth="55.0" text="Składniki" />
+      <Button layoutX="708.0" layoutY="353.0" mnemonicParsing="false" text="Zapisz" />
+      <TextArea layoutX="49.0" layoutY="100.0" prefHeight="244.0" prefWidth="321.0" text="CREATE jajecznica: [{jajko, 3, szt}, {mleko, 10, ml}]" />
+      <Label layoutX="49.0" layoutY="72.0" text="Edytor składni" />
+
+   </children>
+</Pane>
